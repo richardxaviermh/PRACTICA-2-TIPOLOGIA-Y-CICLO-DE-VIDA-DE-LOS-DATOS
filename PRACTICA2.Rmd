@@ -458,7 +458,7 @@ for (i in 1:dim(t)[1]){
 }
 t
 ```
-* Las personas identificadas como género otro tienen un nivel medio de glucosa en la sanfre.
+* Las personas identificadas como género otro tienen un nivel medio de glucosa en la sangre.
 
 * Es más probable encontrar hombres con alto nivel de glucosa que mujeres.
 
@@ -474,6 +474,7 @@ t
 ******
 # . Referencias
 ******
+**Organizacion Mundial de la Salud**. Enfermedades cardiovasculares. [Fecha de consulta: 01 de junio del 2021]. https://www.who.int/es/news-room/fact-sheets/detail/cardiovascular-diseases-(cvds)
 
 **Centro Nacional para la Prevención de Enfermedades Crónicas y Promoción de la Salud, División de Nutrición, Actividad Física, y Obesidad**. IMC Índice de masa corporal. [Fecha de consulta: 05 de junio del 2021]. https://www.cdc.gov/healthyweight/spanish/assessing/index.html
 
