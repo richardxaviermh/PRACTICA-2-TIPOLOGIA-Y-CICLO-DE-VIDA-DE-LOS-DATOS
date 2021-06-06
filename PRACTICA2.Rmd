@@ -24,7 +24,7 @@ El dataset a ser utilizado en esta práctica ha sido obtenido de la página de K
 
 Este dataset contiene información para predecir si un paciente tiene la probabilidad de sufrir un accidente cerebral vascular (AVC) basado en ciertas características como género, edad, ciertas enfermedades, etc.
 
-De acuerdo a la Organización Mundial de la Salud, las enfermedades cardiovasculares son la principal causa de muerte en todo el mundo, dentro de las cuales se encuentran los ataques al coración y los AVC. https://www.who.int/es/news-room/fact-sheets/detail/cardiovascular-diseases-(cvds)
+De acuerdo a la Organización Mundial de la Salud, las enfermedades cardiovasculares son la principal causa de muerte en todo el mundo, dentro de las cuales se encuentran los ataques al corazón y los AVC. https://www.who.int/es/news-room/fact-sheets/detail/cardiovascular-diseases-(cvds)
 
 Es importante este dataset ya que permite analizar si cierto grupo de pacientes tiene mayor incidencia a sufrir AVC en comparación con otro y en base a esta predisposición se pueden definir políticas de medicina preventiva para evitar la ocurrencia de un derrame.
 
@@ -53,8 +53,6 @@ Para efectos de este análisis de van a utilizar todas las variables proporciona
 ******
 
 ******
-# Análisis de los datos
-******
 ## . ¿Los datos contienen ceros o elementos vacíos? ¿Cómo gestionarías cada uno de estos casos? 
 
 ******
@@ -73,7 +71,7 @@ Podemos apreciar que la variable bmi tiene valores N/A que deben ser saneados.
 colSums(is.na(df_stroke))
 ```
 
-Se puede apreciar que no existen valores NA.
+Se puede apreciar que no existen valores nulos (NA).
 
 
 ```{r message= FALSE, warning=FALSE}
@@ -171,17 +169,96 @@ Una vez comprobamos que con valores altos los datos no siguen con la tendencia n
 
 ******
 
+Creamos diversos diagramas de caja para observar la distribución de las variables 'Age', 'avg_glucose_level' y 'bmi' respecto de la variable ‘stroke‘
 
-******
-## . Selección de los grupos de datos que se quieren analizar/comparar (planificación de los análisis a aplicar).
+```{r message= FALSE, warning=FALSE} 
+#Gráficos
+boxplot(formula = age ~ stroke, data =  df_stroke,  main = "Age vs Stroke")
+```
 
+Podemos observar que la mediana de la edad cuando se ha tenido un ACV es mayor que cuando no hay incidencia de AVC.
 
-******
+```{r message= FALSE, warning=FALSE}
+#Gráficos
+boxplot(formula = avg_glucose_level ~ stroke, data =  df_stroke,  main = "avg_glucose_level vs Stroke")
+```
+
+Podemos observar que la mediana de los niveles de glucosa cuando se ha tenido un AVC es mayor que cuando no hay incidencia de ACV.
+
+```{r message= FALSE, warning=FALSE}
+#Gráficos
+boxplot(formula = bmi ~ stroke, data =  df_stroke,  main = "bmi vs Stroke")
+```
+Podemos observar que se tiene mayor cantidad de valores outliers en el bmi de las personas que no han tenido un AVC.
 
 ******
 ## .  Comprobación de la normalidad y homogeneidad de la varianza.
 
 ******
+
+Vamos a comprobar la normalidad de la variable bmi
+
+```{r message= FALSE, warning=FALSE}
+#Gráficos Boxplot e histograma
+par(mfrow=c(1,3))
+b_bmi <- boxplot(df_stroke$bmi,  main = "Variable BMI") 
+hist(df_stroke$bmi, main = "Variable BMI") 
+qqnorm(df_stroke$bmi)
+qqline(df_stroke$bmi)
+```
+
+Podemos observar en los gráficos que la variable bmi no tiene una distribución normal
+
+
+```{r message= FALSE, warning=FALSE}
+#Gráficos Boxplot e histograma
+par(mfrow=c(1,3))
+b_age <- boxplot(df_stroke$age,  main = "Variable Age") 
+hist(df_stroke$age, main = "Variable Age") 
+qqnorm(df_stroke$age)
+qqline(df_stroke$age)
+```
+
+Podemos observar en los gráficos que la variable age no tiene una distribución normal
+
+```{r message= FALSE, warning=FALSE}
+#Gráficos Boxplot e histograma
+par(mfrow=c(1,3))
+b_age <- boxplot(df_stroke$avg_glucose_level,  main = "Variable glucose_level") 
+hist(df_stroke$avg_glucose_level, main = "Variable glucose_level") 
+qqnorm(df_stroke$avg_glucose_level)
+qqline(df_stroke$avg_glucose_level)
+```
+
+Podemos observar en los gráficos que la variable avg_glucose_level no tiene una distribución normal
+
+A pesar que estas tres variables no son normales en la distribución total de los datos, al tener una muestra mayor a 400, se puede asumir normalidad por el teorema del límite central (distribución de la media puede ser aproximadamente normal).
+
+Procedemos a comprobar la homogeneidad de la varianza
+
+```{r message= FALSE, warning=FALSE}
+#Test de varianzas iguales
+var.test(df_stroke$age[df_stroke$stroke=="0"], df_stroke$age[df_stroke$stroke=="1"])
+```
+
+El valor p-value es menor alfa, por lo tanto se descarta la hipótesis nula, es decir se descarta la igualdad de varianzas en la edad cuando el paciente no ha tenido un AVC que cuando si.
+
+
+```{r message= FALSE, warning=FALSE}
+#Test de varianzas iguales
+var.test(df_stroke$bmi[df_stroke$stroke=="0"], df_stroke$bmi[df_stroke$stroke=="1"])
+```
+
+El valor p-value es menor alfa, por lo tanto se descarta la hipótesis nula, es decir se descarta la igualdad de varianzas en el bmi cuando el paciente no ha tenido un AVC que cuando si.
+
+
+```{r message= FALSE, warning=FALSE}
+#Test de varianzas iguales
+var.test(df_stroke$avg_glucose_level[df_stroke$stroke=="0"], df_stroke$avg_glucose_level[df_stroke$stroke=="1"])
+```
+
+El valor p-value es menor alfa, por lo tanto se descarta la hipótesis nula, es decir se descarta la igualdad de varianzas en el bmi cuando el paciente no ha tenido un AVC que cuando si.
+
 
 ******
 ## .  Aplicación de pruebas estadísticas para comparar los grupos de datos. 
@@ -189,6 +266,33 @@ Una vez comprobamos que con valores altos los datos no siguen con la tendencia n
 ******
 
 En función de los datos y el objetivo del estudio, aplicar pruebas de contraste de hipótesis, correlaciones, regresiones, etc. Aplicar al menos tres métodos de análisis diferentes. 
+
+
+Podemos analizar que las personas de mas edad tienen mayor incidencia de presentar un AVC con un nivel de conﬁanza del 95%.
+
+
+******
+### . Hipótesis nula y la alternativa
+******
+La hipótesis nula es que las medias de la edad son iguales en pacientes con AVC que sin AVC
+
+H0: media_edad_stroke = media_edad_sin_stroke
+
+La hipótesis alternativa es 
+
+H1: media_edad_stroke > media_edad_sin_stroke
+
+
+Debemos aplicar un test de dos muestras independientes sobre la media con varianza desconocida y diferente. 
+Es un test unilateral por la derecha.
+
+```{r message= FALSE, warning=FALSE}
+t.test(df_stroke$age[df_stroke$stroke=="1"], df_stroke$age[df_stroke$stroke=="0"], var.equal=FALSE, alternative = "greater")
+
+```
+
+
+Podemos observar que el p_value es significativamente menor que alfa (0.05), por lo tanto tenemos evidencia estadistica para rechazar la hipótesis nula, esto es que la media de la edad de los pacientes con AVC es mayor que sin AVC.
 
 ******
 # . Representación de los resultados a partir de tablas y gráficas.
@@ -199,3 +303,4 @@ En función de los datos y el objetivo del estudio, aplicar pruebas de contraste
 # . Resolución del problema. A partir de los resultados obtenidos, ¿cuáles son las conclusiones? ¿Los resultados permiten responder al problema?
 
 ******
+
