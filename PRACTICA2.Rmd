@@ -298,9 +298,187 @@ Podemos observar que el p_value es significativamente menor que alfa (0.05), por
 # . Representación de los resultados a partir de tablas y gráficas.
 
 ******
+Para la representación gráfica de los atributos, se toma en cuenta el número de variables que estos tienen, por lo cual se vuelve a analizar el número de variantes:
+
+```{r message= FALSE, warning=FALSE}
+#conteo de variables por campo
+apply(df_stroke,2, function(x) length(unique(x)))
+```
+Como se detalló al principio de la sección no se tomará en cuenta la variable id, además, se discretizarán los valores de los atributos age, avg_glucose_level y bmi. Para esto se crea un nuevo dataset el cual excluye el atributo id:
+
+```{r message= FALSE, warning=FALSE}
+nuevo_dataset <- df_stroke
+nuevo_dataset$id <- NULL
+filas=dim(nuevo_dataset)[1]
+```
+
+Las edades separamos en 5 grupos entre niños, adolecentes, adultos jóvenes, adultos maduros y adultos mayores.
+
+```{r message= FALSE, warning=FALSE}
+nuevo_dataset[["age"]] <- cut(nuevo_dataset[["age"]], 
+                                    c(min(nuevo_dataset$age)-0.1,
+                                      min(nuevo_dataset$age)+12,
+                                      min(nuevo_dataset$age)+19,
+                                      min(nuevo_dataset$age)+35,
+                                      min(nuevo_dataset$age)+55,
+                                      max(nuevo_dataset$age)), 
+                                    labels = c("Niños", "Adolecentes",
+                                               "Adultos Jóvenes",
+                                               "Adultos Maduros",
+                                               "Adultos Mayores"))
+nuevo_dataset$age <- as.factor(nuevo_dataset$age)
+```
+
+
+El nivel de glucosa lo categorizaremos en 3 niveles Alto, Medio y Bajo.
+
+El primer intervalo debe tomar en cuenta el mínimo por lo cual se debe poner un número menor a este, para que sea incluido, ya que se dividirá en 3 intervalos, se necesitarán 4 valores, para lo cual primero se calcula el valor del incremento entre valores, este valor es la diferencia entre el máximo y mínimo dividio para 3, ya con esto podemos formar 3 intervalos con 4 valores.
+
+```{r message= FALSE, warning=FALSE}
+incr_fixed <- (max(nuevo_dataset$avg_glucose_level) - min(nuevo_dataset$avg_glucose_level))/3
+nuevo_dataset[["avg_glucose_level"]] <- cut(nuevo_dataset[["avg_glucose_level"]], 
+                                    c(min(nuevo_dataset$avg_glucose_level) - 0.01,
+                                      min(nuevo_dataset$avg_glucose_level) + incr_fixed,
+                                      min(nuevo_dataset$avg_glucose_level) + 2 * incr_fixed,
+                                      max(nuevo_dataset$avg_glucose_level)), 
+                                    labels = c("Bajo", "Medio","Alto"))
+nuevo_dataset$avg_glucose_level <- as.factor(nuevo_dataset$avg_glucose_level)
+```
+
+La variable bmi se la categoriza de acuerdo con su significado en el sentido de las medidas de índice corporal, es decir, Bajo Peso, Normal, Sobrepeso y Obesidad.
+
+```{r message= FALSE, warning=FALSE}
+nuevo_dataset[["bmi"]] <- cut(nuevo_dataset[["bmi"]], 
+                                    c(min(nuevo_dataset$bmi)-0.1,
+                                      min(nuevo_dataset$bmi)+18.5,
+                                      min(nuevo_dataset$bmi)+24.9,
+                                      min(nuevo_dataset$bmi)+29.9,
+                                      max(nuevo_dataset$bmi)), 
+                                    labels = c("Bajo Peso", "Normal",
+                                               "Sobrepeso",
+                                               "Obesidad"))
+nuevo_dataset$bmi <- as.factor(nuevo_dataset$bmi)
+```
+
+Finalmente transformamos los atributos faltantes a tipo factor para poder graficarlos:
+
+```{r message= FALSE, warning=FALSE}
+cols<-c("hypertension","heart_disease","stroke")
+for (i in cols){
+  nuevo_dataset[,i] <- as.factor(nuevo_dataset[,i])
+}
+```
+
+**Gráficas**
+
+```{r message= FALSE, warning=FALSE}
+library(ggplot2)
+ggplot(data = nuevo_dataset[1:filas,],aes(x=gender,fill=hypertension))+geom_bar(position="fill")+facet_wrap(~age)
+```
+
+* En esta primera gráfica podemos identificar que de las personas que sufren de hipertensión la mayoría son hombres. 
+
+* También se puede distinguir que la hipertensión comienza a aparecer desde los adolescentes.
+
+* La hipertensión es más probable encontrarla en adultos mayores.
+
+* Además, se nota que solo Adultos Jóvenes se autoidentifican como de otro género.
+
+```{r message= FALSE, warning=FALSE}
+ggplot(data = nuevo_dataset[1:filas,],aes(x=hypertension,fill=heart_disease))+geom_bar(position="fill")+facet_wrap(~age)
+```
+
+* En los datos obtenidos los niños no presentan enfermedades del corazón ni hipertensión.
+
+* Adolecentes y Adultos Jóvenes no exiten datos de enfermedades del corazón, sin embargo si presentan hipertensión.
+
+* En Adultos Madutos y Mayores aparecen las enfermedades del corazón, según los datos, es probable que una persona con hipertensión también padezca de enfermedades del corazón.
+
+```{r message= FALSE, warning=FALSE}
+ggplot(data = nuevo_dataset[1:filas,],aes(x=Residence_type ,fill=work_type))+geom_bar(position="fill")+facet_wrap(~ever_married)
+```
+
+* El trabajo en el sector privado es el más frecuente, mientras que personas que nunca han trabajado aparece en menor frecuencia.
+
+* Las personas que no se han casado es menos probable encontrarlas en el sector del gobierno.
+
+* Las personas casadas tienden a acaparar más plazas de trabaj en el sector privado, además, hay más casados que son trabajadores independientes que los solteros.
+
+* Los niños pueden vivir en el sector urbano o rural, esta variable no es distintiva.
+
+```{r message= FALSE, warning=FALSE}
+ggplot(data = nuevo_dataset[1:filas,],aes(x=gender ,fill=heart_disease))+geom_bar(position="fill")+facet_wrap(~bmi)
+```
+* Todos los datos correspondientes a otro género representan a personas de bajo peso.
+
+* La obesidad en hombres aparece con mayor frecuencia con enfermedades del corazón.
+
+
+```{r message= FALSE, warning=FALSE}
+ggplot(data = nuevo_dataset[1:filas,],aes(x=ever_married,fill=stroke))+geom_bar(position="fill")+facet_wrap(~smoking_status)
+```
+
+* Lo más frecuente es encontrar personas fumadoras que son casadas, además están asociadas con stroke.
+
+* De las peronas que nunca fuman, es más probable que estén marcadas con stroke
+
+
+**Tablas**
+
+```{r message= FALSE, warning=FALSE}
+t<-table(nuevo_dataset[1:filas,]$age,nuevo_dataset[1:filas,]$bmi)
+for (i in 1:dim(t)[1]){
+  t[i,]<-t[i,]/sum(t[i,])*100
+}
+t
+```
+
+* La mayoría de los niños tiene bajo peso y no presentan obesidad.
+
+* De las personas con obesidad es más probable encontrarlas en adultos maduros (35-55 años).
+
+* De las personas con peso normal es más probable encontrarlas en adultos mayores.
+
+```{r message= FALSE, warning=FALSE}
+t<-table(nuevo_dataset[1:filas,]$smoking_status,nuevo_dataset[1:filas,]$hypertension)
+for (i in 1:dim(t)[1]){
+  t[i,]<-t[i,]/sum(t[i,])*100
+}
+t
+```
+* De las personas que presentan hipertensión lo más probable es que fumen.
+
+* La mayoría de personas de los datos no sufren de hipertensión
+
+
+```{r message= FALSE, warning=FALSE}
+t<-table(nuevo_dataset[1:filas,]$gender,nuevo_dataset[1:filas,]$avg_glucose_level)
+for (i in 1:dim(t)[1]){
+  t[i,]<-t[i,]/sum(t[i,])*100
+}
+t
+```
+* Las personas identificadas como género otro tienen un nivel medio de glucosa en la sanfre.
+
+* Es más probable encontrar hombres con alto nivel de glucosa que mujeres.
+
+* Es más probable encontrar mujeres con bajo nivel de glucosa que hombres
+
 
 ******
 # . Resolución del problema. A partir de los resultados obtenidos, ¿cuáles son las conclusiones? ¿Los resultados permiten responder al problema?
 
 ******
 
+
+******
+# . Referencias
+******
+
+**Centro Nacional para la Prevención de Enfermedades Crónicas y Promoción de la Salud, División de Nutrición, Actividad Física, y Obesidad**. IMC Índice de masa corporal. [Fecha de consulta: 05 de junio del 2021]. https://www.cdc.gov/healthyweight/spanish/assessing/index.html
+
+**Durán, Xavier**. (2020, febrero). Limpieza del conjunto de datos de R. Catalunya: Universitat Oberta de Catalunya
+
+**Petry NM**.A comparison of young, middle-aged, and older adult treatment-seeking pathological gamblers. [Fecha de consulta: 05 de junio del 2021]. https://www.ncbi.nlm.nih.gov/pubmed/11815703.
+
+**R Documentation**. Uso de la función cut. Disponible en línea. [Fecha de consulta: 05 de junio del 2020]. https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cut.
