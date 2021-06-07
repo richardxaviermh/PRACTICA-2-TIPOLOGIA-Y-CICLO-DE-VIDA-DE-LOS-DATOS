@@ -268,12 +268,27 @@ El valor p-value es menor alfa, por lo tanto se descarta la hipótesis nula, es 
 En función de los datos y el objetivo del estudio, aplicar pruebas de contraste de hipótesis, correlaciones, regresiones, etc. Aplicar al menos tres métodos de análisis diferentes. 
 
 
+******
+### . Analisis de correlacion
+******
+
+```{r message= FALSE, warning=FALSE}
+library(corrplot)
+res <- cor(df_stroke[,c('age','hypertension','heart_disease','avg_glucose_level','bmi', 'stroke')])
+round(res, 2)
+corrplot(res)
+```
+
+Podemos observar que las seis variables numericas no tiene correlacion entre si.
+
+******
+### . Contraste de hipótesis
+******
+
 Podemos analizar que las personas de mas edad tienen mayor incidencia de presentar un AVC con un nivel de conﬁanza del 95%.
 
+Vamos a plantear una prueba de contraste de hipotesis:
 
-******
-### . Hipótesis nula y la alternativa
-******
 La hipótesis nula es que las medias de la edad son iguales en pacientes con AVC que sin AVC
 
 H0: media_edad_stroke = media_edad_sin_stroke
@@ -288,11 +303,26 @@ Es un test unilateral por la derecha.
 
 ```{r message= FALSE, warning=FALSE}
 t.test(df_stroke$age[df_stroke$stroke=="1"], df_stroke$age[df_stroke$stroke=="0"], var.equal=FALSE, alternative = "greater")
-
 ```
 
 
 Podemos observar que el p_value es significativamente menor que alfa (0.05), por lo tanto tenemos evidencia estadistica para rechazar la hipótesis nula, esto es que la media de la edad de los pacientes con AVC es mayor que sin AVC.
+
+
+******
+### . Modelo de regresión logistica
+******
+
+Vamos a aplicar un modelo de regresión logística para predecir la probabilidad de tener un AVC en función de las demás variables
+
+
+```{r message= FALSE, warning=FALSE}
+mod.log.1<-glm(stroke~gender+age+hypertension+heart_disease+ever_married+work_type+Residence_type+avg_glucose_level+bmi+smoking_status, family = binomial(), data=df_stroke)
+summary(mod.log.1)
+
+```
+
+Podemos observar que con un valor de alfa (0.05), las variables estadisticamente mas significativas para predecir la probabilidad de un accidente AVC son la edad, si el paciente tiene hipertension y los niveles de glucosa.
 
 ******
 # . Representación de los resultados a partir de tablas y gráficas.
@@ -470,6 +500,12 @@ t
 
 ******
 
+En funcion de la informacion del dataset y de acuerdo a los analisis realizados, se concluye que:
+
+- El data set consta de 5110 observaciones con 12 variables
+- Las variables mas importantes en la incidencia de  padecer un AVC son la edad, la hipertension y los niveles de glucosa
+
+
 
 ******
 # . Referencias
@@ -483,3 +519,4 @@ t
 **Petry NM**.A comparison of young, middle-aged, and older adult treatment-seeking pathological gamblers. [Fecha de consulta: 05 de junio del 2021]. https://www.ncbi.nlm.nih.gov/pubmed/11815703.
 
 **R Documentation**. Uso de la función cut. Disponible en línea. [Fecha de consulta: 05 de junio del 2020]. https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cut.
+© 2021 GitHub, Inc.
