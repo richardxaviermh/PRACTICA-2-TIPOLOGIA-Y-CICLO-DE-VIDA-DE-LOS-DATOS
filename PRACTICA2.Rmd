@@ -500,11 +500,7 @@ t
 
 ******
 
-En funcion de la informacion del dataset y de acuerdo a los analisis realizados, se concluye que:
-
-- El data set consta de 5110 observaciones con 12 variables
-- Las variables mas importantes en la incidencia de  padecer un AVC son la edad, la hipertension y los niveles de glucosa
-
+En funcion de la informacion del dataset y de acuerdo a los analisis realizados, se concluye que las variables mas importantes en la incidencia de  padecer un AVC son la edad, la hipertension y los niveles de glucosa. En ese sentido este dataset nos ha ayudado a responder el problema y en base a lo cual se podra definir programas especificos de control de glucosa e hipertension en las pacientes para disminuir la incidencia de un AVC.
 
 
 ******
