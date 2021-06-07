@@ -11,9 +11,9 @@ install.packages("varhandle")
 install.packages("ggplot2")
 install.packages("VIM")
 install.packages("corrplot")
-install.packages("")
 ```
 ## Archivos
  - LICENSE: tipo de licencia del repositorio
  - PRACTICA2.RMD: Código RMarkDown con repuestas a la práctica
  - healthcare-dataset-stroke-data.csv: dataset para análisis
+ - datos_preprocesados.csv: datos limpios y procesados
