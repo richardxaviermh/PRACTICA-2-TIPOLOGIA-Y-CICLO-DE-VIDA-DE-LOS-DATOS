@@ -9,8 +9,8 @@ Para ejecutar el código en R es necesario instalar la siguientes librerías:
 ```
 install.packages("varhandle")
 install.packages("ggplot2")
-install.packages("")
-install.packages("")
+install.packages("VIM")
+install.packages("corrplot")
 install.packages("")
 ```
 ## Archivos
