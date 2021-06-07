@@ -495,6 +495,12 @@ t
 * Es más probable encontrar mujeres con bajo nivel de glucosa que hombres
 
 
+**Exportación de los datos limpios y procesados:**
+
+```{r message= FALSE, warning=FALSE}
+write.csv(nuevo_dataset, file="datos_preprocesados.csv",sep = ";",row.names=FALSE)
+```
+
 ******
 # . Resolución del problema. A partir de los resultados obtenidos, ¿cuáles son las conclusiones? ¿Los resultados permiten responder al problema?
 
