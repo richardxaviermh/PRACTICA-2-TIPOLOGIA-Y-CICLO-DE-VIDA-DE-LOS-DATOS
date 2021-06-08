@@ -11,6 +11,7 @@ install.packages("varhandle")
 install.packages("ggplot2")
 install.packages("VIM")
 install.packages("corrplot")
+install.packages("kableExtra")
 ```
 ## Archivos
  - LICENSE: tipo de licencia del repositorio
