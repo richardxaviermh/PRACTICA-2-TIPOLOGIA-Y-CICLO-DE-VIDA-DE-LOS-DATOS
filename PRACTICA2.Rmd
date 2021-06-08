@@ -192,6 +192,16 @@ boxplot(formula = bmi ~ stroke, data =  df_stroke,  main = "bmi vs Stroke")
 Podemos observar que se tiene mayor cantidad de valores outliers en el bmi de las personas que no han tenido un AVC.
 
 ******
+## . Selección de los grupos de datos que se quieren analizar/comparar (planificación de los análisis a aplicar).
+
+******
+
+En el análisis no se tomará en cuenta la variable: id, porque no genera información adicional que el conteo de registros e indentificación de los mismos.
+
+Para las gráficas se tomará en cuenta el número de variantes por atributo, ya que en el caso de atributos como age, avg_glucose_level y bmi, tienen múltiples valores, por lo tanto se los agrupará en conjuntos para tener una mejor visión en gráficas.
+
+
+******
 ## .  Comprobación de la normalidad y homogeneidad de la varianza.
 
 ******
@@ -432,13 +442,14 @@ ggplot(data = nuevo_dataset[1:filas,],aes(x=Residence_type ,fill=work_type))+geo
 
 * Las personas que no se han casado es menos probable encontrarlas en el sector del gobierno.
 
-* Las personas casadas tienden a acaparar más plazas de trabaj en el sector privado, además, hay más casados que son trabajadores independientes que los solteros.
+* Las personas casadas tienden a acaparar más plazas de trabajo en el sector privado, además, hay más casados que son trabajadores independientes que los solteros.
 
 * Los niños pueden vivir en el sector urbano o rural, esta variable no es distintiva.
 
 ```{r message= FALSE, warning=FALSE}
 ggplot(data = nuevo_dataset[1:filas,],aes(x=gender ,fill=heart_disease))+geom_bar(position="fill")+facet_wrap(~bmi)
 ```
+
 * Todos los datos correspondientes a otro género representan a personas de bajo peso.
 
 * La obesidad en hombres aparece con mayor frecuencia con enfermedades del corazón.
@@ -507,6 +518,15 @@ write.csv(nuevo_dataset, file="datos_preprocesados.csv",sep = ";",row.names=FALS
 ******
 
 En funcion de la informacion del dataset y de acuerdo a los analisis realizados, se concluye que las variables mas importantes en la incidencia de  padecer un AVC son la edad, la hipertension y los niveles de glucosa. En ese sentido este dataset nos ha ayudado a responder el problema y en base a lo cual se podra definir programas especificos de control de glucosa e hipertension en las pacientes para disminuir la incidencia de un AVC.
+
+
+La utilidad de la información es evidente, ya que permite identificar grupos vulnerables, zonas, características sobres las cuales se debe prevenir o crear campañas contra enfermedades o condiciones tales como problemas del corazón, obesidad, hipertensión y sus derivados.
+
+Se identifica que los hombres tienden a generar hipertensión con mayor frecuencia que las mujeres, según los datos estos problemas comienzan a aparecer desde la adolescencia, sin embargo, lo más probable es que encontremos adultos mayores con problemas de hipertención, además los datos indican que es más probable que una persona que tenga hipertensión también padezca de alguna enfermedad del corazón.
+
+La condición física de las personas registradas nos indica que las personas que no se identifican como hombres o mujeres tienden a presentar bajo peso, además se obtiene que la obesidad en hombres aparece con mayor frecuencia con enfermedades del corazón. También se encuentra que los niños tienen bajo peso, con este conocimiento el entorno de la salud puede ejecutar campañas o programas de consciencia en esta sección. Con respecto a esta misma línes se identifica que lo más probable es encontrar mujeres con bajo nivel de glucosa, esto notándose que la relación es inversa en el género, es decir, que los hombres con más frecuencia que las mujeres concentran altos niveles de glucosa.
+
+En las condiciones sociales se tiene que lo más probable es que una persona fumadora sea casada y esta presente hipertensión.
 
 
 ******
