@@ -16,7 +16,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Esta práctica se encuentra disponible en el siguiente link:
+**Esta práctica se encuentra disponible en el siguiente link:**
 https://github.com/richardxaviermh/PRACTICA-2-TIPOLOGIA-Y-CICLO-DE-VIDA-DE-LOS-DATOS
 
 ******
