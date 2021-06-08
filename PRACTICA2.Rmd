@@ -530,8 +530,24 @@ En las condiciones sociales se tiene que lo más probable es que una persona fum
 
 
 ******
+# . Contribución de los Integrantes
+******
+
+```{r message= FALSE, warning=FALSE}
+library(kableExtra)
+contribuciones = data.frame(stringsAsFactors=FALSE,
+Contribuciones = c("Investigación previa ", "Redacción de las respuestas", "Desarrollo código"),
+Firma = c("Andrea Martínez/Richard Jácome", "Andrea Martínez/Richard Jácome", "Andrea Martínez/Richard Jácome")
+)
+kbl(contribuciones) %>%
+kable_paper("hover", 
+              full_width = F)
+```
+
+******
 # . Referencias
 ******
+
 **Organizacion Mundial de la Salud**. Enfermedades cardiovasculares. [Fecha de consulta: 01 de junio del 2021]. https://www.who.int/es/news-room/fact-sheets/detail/cardiovascular-diseases-(cvds)
 
 **Centro Nacional para la Prevención de Enfermedades Crónicas y Promoción de la Salud, División de Nutrición, Actividad Física, y Obesidad**. IMC Índice de masa corporal. [Fecha de consulta: 05 de junio del 2021]. https://www.cdc.gov/healthyweight/spanish/assessing/index.html
@@ -541,4 +557,7 @@ En las condiciones sociales se tiene que lo más probable es que una persona fum
 **Petry NM**.A comparison of young, middle-aged, and older adult treatment-seeking pathological gamblers. [Fecha de consulta: 05 de junio del 2021]. https://www.ncbi.nlm.nih.gov/pubmed/11815703.
 
 **R Documentation**. Uso de la función cut. Disponible en línea. [Fecha de consulta: 05 de junio del 2020]. https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cut.
+
+**R Pubs**. Tablas en R Markdown. Disponible en línea. [Fecha de consulta: 05 de junio del 2020].https://rpubs.com/Juve_Campos/tablasRMarkdown
+
 © 2021 GitHub, Inc.
