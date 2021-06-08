@@ -16,5 +16,7 @@ install.packages("kableExtra")
 ## Archivos
  - LICENSE: tipo de licencia del repositorio
  - PRACTICA2.RMD: Código RMarkDown con repuestas a la práctica
+ - PRACTICA2.html: Respuestas de la práctica en formato html
+ - PRACTICA2.pdf: Respuestas de la práctica en formato pdf
  - healthcare-dataset-stroke-data.csv: dataset original para análisis
  - datos_preprocesados.csv: datos limpios y procesados
