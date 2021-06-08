@@ -15,6 +15,10 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+Esta práctica se encuentra disponible en el siguiente link:
+https://github.com/richardxaviermh/PRACTICA-2-TIPOLOGIA-Y-CICLO-DE-VIDA-DE-LOS-DATOS
+
 ******
 # . Descripción del dataset. ¿Por qué es importante y qué pregunta/problema pretende responder?
 
